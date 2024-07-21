@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '@/redux/Actions/userActions';
+import { loadUser, registerUser } from '@/redux/Actions/userActions';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -62,11 +62,12 @@ const Register = () => {
         if(isUserAuthenticated) {
             router.push('/');
         }
+        
     }, [message, error, dispatch, toastOptions, isUserAuthenticated, router])
 
     useEffect(() => {
-        
-    }, [])
+        dispatch(loadUser());
+    }, [dispatch])
 
     return (
         <>

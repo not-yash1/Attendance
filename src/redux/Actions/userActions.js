@@ -40,7 +40,6 @@ export const loginUser = (email, password, userAgent, ip) => async(dispatch) =>{
             type: "UserLoginRequest"
         });
 
-        console.log("Logging...")
         const {data} = await axios.post(`${serverUrl}/login`, {email, password, userAgent, ip}, {
             withCredentials: true,
         }, {
@@ -93,6 +92,7 @@ export const loadUser = () => async(dispatch) => {
             type: "LoadUserRequest",
         });
 
+        console.log("Loading User...")
         const {data} = await axios.get(`${serverUrl}/me`, {
             withCredentials: true,
         });

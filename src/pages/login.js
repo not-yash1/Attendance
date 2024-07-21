@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { loginUser } from '@/redux/Actions/userActions';
+import { loadUser, loginUser } from '@/redux/Actions/userActions';
 import { toast } from 'react-toastify';
 
 const Login = () => {
@@ -46,6 +46,10 @@ const Login = () => {
             router.push('/');
         }
     }, [error, message, isUserAuthenticated, loading, dispatch]);
+
+    useEffect(() => {
+        dispatch(loadUser());
+    }, [dispatch])
 
     return (
         <>
