@@ -10,7 +10,6 @@ export const registerUser = (name, email, password, userAgent, ip) => async(disp
             type: "UserRegisterRequest"
         });
 
-        console.log("Action working")
         const {data} = await axios.post(`${serverUrl}/register`, {name, email, password, userAgent, ip}, {
             withCredentials: true,
         }, {
@@ -92,7 +91,6 @@ export const loadUser = () => async(dispatch) => {
             type: "LoadUserRequest",
         });
 
-        console.log("Loading User...")
         const {data} = await axios.get(`${serverUrl}/me`, {
             withCredentials: true,
         });
