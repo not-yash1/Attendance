@@ -29,7 +29,9 @@ const Register = () => {
 
     const dispatch = useDispatch();
 
-    const { message, error, isUserAuthenticated, loading } = useSelector(state => state.userAuth)
+    const { message, error, isUserAuthenticated, loading } = useSelector(state => state.registerUser)
+    const { isUserAuthenticated: isAuthenticated } = useSelector(state => state.user);
+    
 
     const handleChange = (e) => {
         setValues({
@@ -44,10 +46,6 @@ const Register = () => {
         const ip = await axios.get('https://api.ipify.org?format=json').then(res => res.data.ip);
 
         dispatch(registerUser(values.name, values.email, values.password, userAgent, ip))
-
-        // axios.post('/api/register', { email, password, userAgent, ip })
-        //     .then(response => console.log(response))
-        //     .catch(error => console.error(error));
     };
 
     useEffect(() => {
@@ -62,8 +60,11 @@ const Register = () => {
         if(isUserAuthenticated) {
             router.push('/');
         }
+        if(isAuthenticated) {
+            router.push('/');
+        }
         
-    }, [message, error, dispatch, toastOptions, isUserAuthenticated, router])
+    }, [message, error, dispatch, toastOptions, isUserAuthenticated, router, isAuthenticated])
 
     useEffect(() => {
         dispatch(loadUser());

@@ -24,6 +24,7 @@ const Login = () => {
     const dispatch = useDispatch()
     const router = useRouter();
     const { message, loading, error, isUserAuthenticated } = useSelector(state => state.userAuth);
+    const { isUserAuthenticated: isAuthenticated } = useSelector(state => state.user);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,7 +46,10 @@ const Login = () => {
         if (isUserAuthenticated) {
             router.push('/');
         }
-    }, [error, message, isUserAuthenticated, loading, dispatch]);
+        if(isAuthenticated) {
+            router.push('/');
+        }
+    }, [error, message, isUserAuthenticated, loading, dispatch, isAuthenticated]);
 
     useEffect(() => {
         dispatch(loadUser());

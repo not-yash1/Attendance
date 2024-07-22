@@ -33,7 +33,7 @@ const ContactFailure = createAction('ContactFailure');
 const clearErrors = createAction('clearErrors');
 const clearMessage = createAction('clearMessage');
 
-export const UserAuthReducer = createReducer(initialState, (builder) => {
+export const UserRegisterReducer = createReducer(initialState, (builder) => {
     builder
     .addCase(UserRegisterRequest, (state) => {
         state.loading = true;
@@ -42,12 +42,22 @@ export const UserAuthReducer = createReducer(initialState, (builder) => {
         state.loading = false;
         state.message = action.payload;
         state.isUserAuthenticated = true;
+        // state.user = action.payload
     })
     .addCase(UserRegisterFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.isUserAuthenticated = false;
     })
+    .addCase(clearErrors, (state) => {
+        state.error = null;
+    })
+    .addCase(clearMessage, (state) => {
+        state.message = null;
+    })
+})
+
+export const UserAuthReducer = createReducer(initialState, (builder) => {
+    builder
     .addCase(UserLoginRequest, (state) => {
         state.loading = true;
     })
@@ -57,19 +67,6 @@ export const UserAuthReducer = createReducer(initialState, (builder) => {
         state.isUserAuthenticated = true;
     })
     .addCase(UserLoginFailure, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        state.isUserAuthenticated = false;
-    })
-    .addCase(LoadUserRequest, (state) => {
-        state.loading = true;
-    })
-    .addCase(LoadUserSuccess, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
-        state.isUserAuthenticated = true;
-    })
-    .addCase(LoadUserFailure, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         state.isUserAuthenticated = false;
@@ -87,6 +84,29 @@ export const UserAuthReducer = createReducer(initialState, (builder) => {
         state.loading = false;
         state.error = action.payload;
         state.isUserAuthenticated = true;
+    })
+    .addCase(clearErrors, (state) => {
+        state.error = null;
+    })
+    .addCase(clearMessage, (state) => {
+        state.message = null;
+    })
+})
+
+export const LoadUserReducer = createReducer(initialState, (builder) => {
+    builder
+    .addCase(LoadUserRequest, (state) => {
+        state.loading = true;
+    })
+    .addCase(LoadUserSuccess, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isUserAuthenticated = true;
+    })
+    .addCase(LoadUserFailure, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isUserAuthenticated = false;
     })
     .addCase(clearErrors, (state) => {
         state.error = null;
