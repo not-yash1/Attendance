@@ -3,14 +3,14 @@ import axios from "axios"
 // const serverUrl = "http://localhost:7001/api/v1"
 const serverUrl = "https://chitkara-backend.onrender.com/api/v1"
 
-export const registerUser = (name, email, password, userAgent, ip) => async(dispatch) =>{
+export const registerUser = (name, email, password, userAgent, ip, latitude, longitude) => async(dispatch) =>{
 
     try {
         dispatch({
             type: "UserRegisterRequest"
         });
 
-        const {data} = await axios.post(`${serverUrl}/register`, {name, email, password, userAgent, ip}, {
+        const {data} = await axios.post(`${serverUrl}/register`, {name, email, password, userAgent, ip, latitude, longitude}, {
             withCredentials: true,
         }, {
             headers:{
@@ -32,14 +32,14 @@ export const registerUser = (name, email, password, userAgent, ip) => async(disp
     }
 }
 
-export const loginUser = (email, password, userAgent, ip) => async(dispatch) =>{
+export const loginUser = (email, password, userAgent, ip, latitude, longitude) => async(dispatch) =>{
 
     try {
         dispatch({
             type: "UserLoginRequest"
         });
 
-        const {data} = await axios.post(`${serverUrl}/login`, {email, password, userAgent, ip}, {
+        const {data} = await axios.post(`${serverUrl}/login`, {email, password, userAgent, ip, latitude, longitude}, {
             withCredentials: true,
         }, {
             headers:{

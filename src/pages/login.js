@@ -21,6 +21,9 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const [ipAdd, setIpAdd] = useState({ userAgent: '', ip: '' });
+    const [location, setLocation] = useState({ latitude: null, longitude: null });
+
     const dispatch = useDispatch()
     const router = useRouter();
     const { message, loading, error, isUserAuthenticated } = useSelector(state => state.userAuth);
@@ -31,7 +34,22 @@ const Login = () => {
         const userAgent = navigator.userAgent;
         const ip = await axios.get('https://api.ipify.org?format=json').then(res => res.data.ip);
 
-        dispatch(loginUser(email, password, userAgent, ip));
+        if(userAgent && ip) {
+            setIpAdd({ userAgent, ip });
+        }
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+                if (latitude && longitude) {
+                    setLocation({ latitude, longitude });
+                }
+            } catch (error) {
+                toast.error(error, toastOptions);
+            }
+        });
+
+        // dispatch(loginUser(email, password, userAgent, ip));
     };
 
     useEffect(() => {
@@ -54,6 +72,12 @@ const Login = () => {
     useEffect(() => {
         dispatch(loadUser());
     }, [dispatch])
+
+    useEffect(() => {
+        if(location.latitude && location.longitude) {
+            dispatch(loginUser(email, password, ipAdd.userAgent, ipAdd.ip, location.latitude, location.longitude));
+        }
+    }, [location])
 
     return (
         <>

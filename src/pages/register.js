@@ -27,6 +27,9 @@ const Register = () => {
         password: '',
     })
 
+    const [location, setLocation] = useState({ latitude: null, longitude: null });
+    const [ipAdd, setIpAdd] = useState({ userAgent: '', ip: '' });
+
     const dispatch = useDispatch();
 
     const { message, error, isUserAuthenticated, loading } = useSelector(state => state.registerUser)
@@ -45,7 +48,24 @@ const Register = () => {
         const userAgent = navigator.userAgent;
         const ip = await axios.get('https://api.ipify.org?format=json').then(res => res.data.ip);
 
-        dispatch(registerUser(values.name, values.email, values.password, userAgent, ip))
+        if(ip && userAgent){
+            setIpAdd({ userAgent, ip });
+        }
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+                if(latitude && longitude) {
+                    setLocation({ latitude, longitude });
+                }
+            } catch (error) {
+                toast.error(error, toastOptions);
+            }
+            
+            // dispatch(registerUser(values.name, values.email, values.password, userAgent, ip, latitude, longitude))
+        })
+
+        // dispatch(registerUser(values.name, values.email, values.password, userAgent, ip))
     };
 
     useEffect(() => {
@@ -69,6 +89,12 @@ const Register = () => {
     useEffect(() => {
         dispatch(loadUser());
     }, [dispatch])
+
+    useEffect(() => {
+        if(location.latitude && location.longitude) {
+            dispatch(registerUser(values.name, values.email, values.password, ipAdd.userAgent, ipAdd.ip, location.latitude, location.longitude));
+        }
+    }, [location])
 
     return (
         <>
