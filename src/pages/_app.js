@@ -6,7 +6,10 @@ import store from '../redux/store';
 import { ToastContainer } from 'react-toastify';
 import Head from 'next/head';
 import 'react-toastify/dist/ReactToastify.css';
-// import '../styles/globals.css';
+import '../styles/login.css';
+import '../styles/register.css';
+// import './login.css'
+
 
 function MyApp({ Component, pageProps }) {
   return (

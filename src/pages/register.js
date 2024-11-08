@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 
 const Register = () => {
 
+    const spans = Array.from({ length: 128 })
+
     const router = useRouter();
 
     const toastOptions = {
@@ -29,6 +31,7 @@ const Register = () => {
 
     const [location, setLocation] = useState({ latitude: null, longitude: null });
     const [ipAdd, setIpAdd] = useState({ userAgent: '', ip: '' });
+    const [isBtn, setIsBtn] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -42,6 +45,14 @@ const Register = () => {
             [e.target.name]: e.target.value
         })
     }
+
+    useEffect(() => {
+        if(values.email && values.password && values.name) {
+            setIsBtn(true);
+        } else {
+            setIsBtn(false);
+        }
+    }, [values])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -103,12 +114,50 @@ const Register = () => {
                 isUserAuthenticated ? (
                     null
                 ) : (
-                    <form onSubmit={handleSubmit}>
-                        <input type="name" name='name' value={values.name} onChange={(e) => handleChange(e)} />
-                        <input type="email" name='email' value={values.email} onChange={(e) => handleChange(e)} />
-                        <input type="password" name='password' value={values.password} onChange={(e) => handleChange(e)} />
-                        <button type="submit">Register</button>
-                    </form>
+                    // <form onSubmit={handleSubmit}>
+                    //     <input type="name" name='name' value={values.name} onChange={(e) => handleChange(e)} />
+                    //     <input type="email" name='email' value={values.email} onChange={(e) => handleChange(e)} />
+                    //     <input type="password" name='password' value={values.password} onChange={(e) => handleChange(e)} />
+                    //     <button type="submit">Register</button>
+                    // </form>
+                    <section>
+                        
+                        <div className="signup-cont">
+                            {spans.map((_, index) => (
+                                <span key={index} className="span"></span>
+                            ))}
+                            <div className="signin">
+                                <div className="content">
+                                    <h2>Sign Up</h2>
+                                    {/* <div className="form"> */}
+                                        <form className='form' onSubmit={handleSubmit}>
+                                            <div className="inputBx">
+                                                <input type="text" name='name' value={values.name} onChange={(e) => handleChange(e)} required />
+                                                <i>Name</i>
+                                            </div>
+                                            <div className="inputBx">
+                                                <input type="email" name='email' value={values.email} onChange={(e) => handleChange(e)} required />
+                                                <i>Email</i>
+                                            </div>
+                                            <div className="inputBx">
+                                                <input type="password" name='password' value={values.password} onChange={(e) => handleChange(e)} required />
+                                                <i>Password</i>
+                                            </div>
+                                            <div className="links">
+                                                <Link href="/#">Forgot Pasword?</Link>
+                                                <Link href="/login">Login</Link>
+                                            </div>
+                                            <div className="inputBx">
+                                                <input 
+                                                disabled={loading || !isBtn} 
+                                                type="submit" value="Sign Up"/>
+                                            </div>
+                                        </form>
+                                    {/* </div> */}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 )
             )
         }

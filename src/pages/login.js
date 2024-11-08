@@ -4,8 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { loadUser, loginUser } from '@/redux/Actions/userActions';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
+// import './login.css'
 
 const Login = () => {
+
+    const spans = Array.from({ length: 128 })
 
     const toastOptions = {
         position: "bottom-center",
@@ -20,6 +24,7 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isBtn, setIsBtn] = useState(false);
 
     const [ipAdd, setIpAdd] = useState({ userAgent: '', ip: '' });
     const [location, setLocation] = useState({ latitude: null, longitude: null });
@@ -53,6 +58,14 @@ const Login = () => {
     };
 
     useEffect(() => {
+        if(email && password) {
+            setIsBtn(true);
+        } else {
+            setIsBtn(false);
+        }
+    }, [email, password])
+
+    useEffect(() => {
         if (error) {
             toast.error(error, toastOptions);
             dispatch({ type: "clearError" });
@@ -83,11 +96,45 @@ const Login = () => {
         <>
             {
                 !loading && !isUserAuthenticated && (
-                    <form onSubmit={handleSubmit}>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <button type="submit">Login</button>
-                    </form>
+                    // <form onSubmit={handleSubmit}>
+                    //     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    //     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    //     <button type="submit">Login</button>
+                    // </form>
+                    <section>
+                        
+                        <div className="login-cont">
+                            {spans.map((_, index) => (
+                                <span key={index} className="span"></span>
+                            ))}
+                            <div className="signin">
+                                <div className="content">
+                                    <h2>Login</h2>
+                                    {/* <div className="form"> */}
+                                        <form className='form' onSubmit={handleSubmit}>
+                                            <div className="inputBx">
+                                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                                <i>Email</i>
+                                            </div>
+                                            <div className="inputBx">
+                                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                                                <i>Password</i>
+                                            </div>
+                                            <div className="links">
+                                                <Link href="/#">Forgot Pasword?</Link>
+                                                <Link href="/register">Sign Up</Link>
+                                            </div>
+                                            <div className="inputBx">
+                                                <input 
+                                                disabled={loading || !isBtn} 
+                                                type="submit" value="Login"/>
+                                            </div>
+                                        </form>
+                                    {/* </div> */}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 )
             }
         </>

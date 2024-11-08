@@ -1,7 +1,7 @@
 import axios from "axios"
 
-// const serverUrl = "http://localhost:7001/api/v1"
-const serverUrl = "https://chitkara-backend.onrender.com/api/v1"
+const serverUrl = "http://localhost:7001/api/v1"
+// const serverUrl = "https://chitkara-backend.onrender.com/api/v1"
 
 export const registerUser = (name, email, password, userAgent, ip, latitude, longitude) => async(dispatch) =>{
 
